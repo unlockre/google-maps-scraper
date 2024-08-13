@@ -10,6 +10,9 @@ RUN mkdir app
 WORKDIR /app
 COPY . /app
 
+# Set the KUBERNETES_SERVICE_HOST environment variable
+ENV KUBERNETES_SERVICE_HOST=127.0.0.1
+
 RUN python run.py install
 
 ENTRYPOINT ["./scripts/startup.sh"]
