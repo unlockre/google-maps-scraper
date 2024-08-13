@@ -1,8 +1,9 @@
 botasaurus
-botasaurus-server
+botasaurus_server
 dateutils
 lxml
 regex
 
 fastapi
 uvicorn
+bottle
