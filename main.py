@@ -18,7 +18,7 @@ if __name__ == "__main__":
     if not Server.get_scrapers_names():
         raise RuntimeError("No scrapers found. Please add a scraper using Server.add_scraper.")
 
-    host = 'localhost'
+    host = '0.0.0.0'
     debug = False
     run(
         host=host,
