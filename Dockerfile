@@ -12,4 +12,4 @@ COPY . /app
 
 RUN python run.py install
 
-CMD ["./scripts/startup.sh"]
+ENTRYPOINT ["./scripts/startup.sh"]

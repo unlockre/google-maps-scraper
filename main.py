@@ -3,8 +3,15 @@ from typing import Optional
 from fastapi import FastAPI, Query
 from botasaurus_api import Api
 
-api = Api(create_response_files=False)
 app = FastAPI()
+_api_instance = None
+
+
+def get_api_instance():
+    global _api_instance
+    if _api_instance is None:
+        _api_instance = Api(create_response_files=False)
+    return _api_instance
 
 
 @app.get("/health")
@@ -32,6 +39,9 @@ def create_task(
         'coordinates': '',
         'zoom_level': 14,
     }
+
+    # Lazy load the Api instance
+    api = get_api_instance()
     task = api.create_sync_task(data=data, scraper_name='google_maps_scraper')
 
     return task
