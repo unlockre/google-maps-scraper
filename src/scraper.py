@@ -83,6 +83,7 @@ def process_reviews(reviews):
             "is_local_guide": review.get("user_is_local_guide"),
             "review_translated_text": review.get("translated_text"),
             "response_from_owner_translated_text": review.get("translated_response_text"),
+            "user_name" : review.get("user_name")
             # "extracted_at": review.get("retrieval_date")
         }
         processed_reviews.append(processed_review)
