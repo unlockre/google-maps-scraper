@@ -398,10 +398,10 @@ Server.add_scraper(
         sorts.AlphabeticDescendingSort("website"),
     ],
 )
-Server.set_rate_limit(request=1,task=1)
+Server.set_rate_limit(browser=5, request=10, task=10)
 Server.enable_cache()
 Server.configure(
-     title="Google Maps Scraper",
+    title="Google Maps Scraper",
     header_title="Made with Botasaurus",
     description="Find thousands of new customers personal phone, email and grow your business exponentially.",
     right_header={
