@@ -7,7 +7,7 @@ import json
 
 ZENROWS_USER = os.getenv("ZENROWS_USER")
 ZENROWS_PWD = os.getenv("ZENROWS_PWD")
-ZENROWS_API_KEY = os.getenv("ZENROWS_API_KEY")
+PROXY_SERVICE_API_KEY = os.getenv("PROXY_SERVICE_API_KEY")
 
 def extract_review_data(review_object):
     data = {}
@@ -104,13 +104,25 @@ def get_apartmentratings_reviews(driver: Driver, data):
 @request()
 def get_apartmentratings_reviews_request(request: Request, data):
     url = data['url']
-    params = {
-        'url': url,
-        'apikey': ZENROWS_API_KEY,
-        'js_render': 'true'
+    headers = {
+        'Authorization': PROXY_SERVICE_API_KEY,
+        'Content-Type': 'application/json'
+    }
+    payload = {
+        "url": url,
+        "method": "GET",
+        "proxy_source": "zenrows",
+        "response_type": "html",
+        "proxy_settings": {
+            "asp": True,
+            "premium_proxy": False
+        },
+        "body": None,
+        "headers": None
     }
     def fetch_html_func(u):
-        response = request.get('https://api.zenrows.com/v1/', params={**params, 'url': u})
+        payload["url"] = u
+        response = request.post('https://proxy-service.whykeyway.com/get_data', headers=headers, json=payload)
         return response.text
 
     return fetch_reviews(url, fetch_html_func)
