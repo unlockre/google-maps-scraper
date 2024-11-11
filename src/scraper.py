@@ -1,5 +1,6 @@
 import traceback
 from botasaurus import cl, bt
+from .kw_reviews_scrapper import get_all_reviews, get_prop_id
 from botasaurus.cache import DontCache
 from src.extract_data import extract_data, perform_extract_possible_map_link
 from src.scraper_utils import create_search_link, perform_visit
@@ -101,20 +102,11 @@ def scrape_reviews(requests, data):
     place_id = data["place_id"]
     link = data["link"]
 
-    max_r = data["max"]
+    prop_id = get_prop_id(link)
 
-    reviews_sort = data["reviews_sort"]
-    lang = data["lang"]
+    reviews = get_all_reviews(prop_id)
     
-    processed = []
-    with GoogleMapsAPIScraper() as scraper:
-
-        result = scraper.scrape_reviews(
-            link,  max_r, lang, sort_by=reviews_sort
-        )
-        processed = process_reviews(result, )
-    
-    return {"place_id":place_id, "reviews": processed}
+    return {"place_id":place_id, "reviews": reviews}
 
 
 class RetryException(Exception):
