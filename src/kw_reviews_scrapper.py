@@ -81,8 +81,8 @@ def get_reviews_and_next_page_token(place_id, page_token = ""):
     for i, element in enumerate(data_raw):
                 data = {
                     "review_id": safe_extract(data_raw, i, 0, 0),
-                    "user_name": safe_extract(data_raw, i, 0, 1, 4, 5, 0),
-                    "review_text": safe_extract(data_raw, i, 0, 2, 15, 0, 0),
+                    "user_name": safe_extract(data_raw, i, 0, 1, 4, 5, 0, default=""),
+                    "review_text": safe_extract(data_raw, i, 0, 2, 15, 0, 0, default=""),
                     "rating": safe_extract(data_raw, i, 0, 2, 0, 0),
                     "published_at_date": safe_extract(data_raw, i, 0, 1, 3),
                     "review_link": safe_extract(data_raw, i, 0, 4, 3, 0),
