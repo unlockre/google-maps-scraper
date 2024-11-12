@@ -87,7 +87,9 @@ def get_reviews_and_next_page_token(place_id, page_token = ""):
                     "published_at_date": safe_extract(data_raw, i, 0, 1, 3),
                     "review_link": safe_extract(data_raw, i, 0, 4, 3, 0),
                     "response_from_owner_date": safe_extract(data_raw, i, 0, 3, 2),
-                    "response_from_owner_text": safe_extract(data_raw, i, 0, 3, 14, 0, 0)
+                    "response_from_owner_text": safe_extract(data_raw, i, 0, 3, 14, 0, 0),
+                    "published_at": "",
+                    "review_likes_count": 0
                 }
                 if data["response_from_owner_date"]:
                     data["response_from_owner_date"] = datetime.datetime.fromtimestamp(data["response_from_owner_date"] / 1000000).strftime('%Y-%m-%d %H:%M:%S.%f')
