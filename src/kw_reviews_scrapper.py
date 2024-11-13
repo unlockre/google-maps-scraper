@@ -122,5 +122,13 @@ def get_all_reviews(place_id, review_until=None):
                 logging.error(f"Error parsing review_until date: {review_until}. Retrieving all reviews.")
                 pass
 
+    if review_until:
+        try:
+            review_until_date = datetime.datetime.strptime(review_until, '%Y-%m-%d')
+            all_reviews = [review for review in all_reviews if datetime.datetime.strptime(review["published_at_date"], '%Y-%m-%d %H:%M:%S.%f') >= review_until_date]
+        except:
+            logging.error(f"Error parsing review_until date: {review_until}. Returning all reviews.")
+            pass
+
     return all_reviews
 
