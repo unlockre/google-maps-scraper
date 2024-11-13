@@ -104,7 +104,7 @@ def scrape_reviews(requests, data):
 
     prop_id = get_prop_id(link)
 
-    reviews = get_all_reviews(prop_id)
+    reviews = get_all_reviews(prop_id, data.get('review_until'))
     
     return {"place_id":place_id, "reviews": reviews}
 

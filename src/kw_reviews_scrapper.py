@@ -1,3 +1,4 @@
+import logging
 import time
 import requests
 import datetime
@@ -102,7 +103,7 @@ def get_reviews_and_next_page_token(place_id, page_token = ""):
     return reviews, next_page_token
 
 
-def get_all_reviews(place_id):
+def get_all_reviews(place_id, review_until=None):
     all_reviews = []
     next_page_token = ""
 
@@ -111,6 +112,15 @@ def get_all_reviews(place_id):
         all_reviews.extend(reviews)
         if not next_page_token:
             break
+        if review_until:
+            try:
+                review_until_date = datetime.datetime.strptime(review_until, '%Y-%m-%d')
+                last_review_date = datetime.datetime.strptime(reviews[-1]["published_at_date"], '%Y-%m-%d %H:%M:%S.%f')
+                if last_review_date < review_until_date:
+                    break
+            except:
+                logging.error(f"Error parsing review_until date: {review_until}. Retrieving all reviews.")
+                pass
 
     return all_reviews
 

@@ -202,7 +202,7 @@ def print_rvs_message(hl):
         #     print("You have choes to scrape detailed reviews by using scrape_reviews, the published_at_date, response_from_owner_date is only provided in English Language. So published_at_date, response_from_owner_date will be null." ) 
         printed = True
 
-def create_reviews_data(places, reviews_max, reviews_sort, lang):
+def create_reviews_data(places, reviews_max, reviews_sort, lang, review_until):
     reviews_data = []
     
     chosen_lang = lang if lang else "en"
@@ -221,6 +221,7 @@ def create_reviews_data(places, reviews_max, reviews_sort, lang):
             "max": max_r,
             "reviews_sort": reviews_sort,
             "lang": chosen_lang, 
+            "review_until": review_until,
         }
         reviews_data.append(review_data)
 
@@ -272,7 +273,7 @@ default_addition = {
 }
 
 
-def process_result(key, scrape_reviews, reviews_max, reviews_sort,  lang, should_scrape_socials,places_obj):
+def process_result(key, scrape_reviews, reviews_max, reviews_sort,  lang, should_scrape_socials,places_obj, review_until):
       places = places_obj["places"]
       query = places_obj["query"]
 
@@ -295,7 +296,7 @@ def process_result(key, scrape_reviews, reviews_max, reviews_sort,  lang, should
         # 3. Scrape Reviews
       if scrape_reviews:
           placed_with_reviews = filter_places(cleaned_places, {"min_reviews": 1})
-          reviews_data = create_reviews_data(placed_with_reviews, reviews_max, reviews_sort, lang)
+          reviews_data = create_reviews_data(placed_with_reviews, reviews_max, reviews_sort, lang, review_until)
           reviews_details =  scraper.scrape_reviews(reviews_data,)
             # print_social_errors
           cleaned_places = merge_reviews(cleaned_places, reviews_details)
@@ -326,13 +327,14 @@ def google_maps_scraper(_, data):
     zoom = data['zoom_level']
     query = data['query']
     links = data.get('links')
+    review_until = data.get('review_until')
 
     place_data = create_place_data(query,  max_results, lang, geo_coordinates, zoom, links)
     places_obj = scraper.scrape_places(place_data,)
     if places_obj is None:
         return DontCache([])
     should_scrape_socials = key  
-    result_item = process_result(key, scrape_reviews, reviews_max, reviews_sort, lang, should_scrape_socials, places_obj)
+    result_item = process_result(key, scrape_reviews, reviews_max, reviews_sort, lang, should_scrape_socials, places_obj, review_until)
     
     pc = result_item["places"]
     

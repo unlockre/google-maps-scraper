@@ -62,6 +62,11 @@ function getInput(controls) {
                 .switch('enable_reviews_extraction', {
                     label: "Enable Reviews Extraction"
                 })
+                .text("review_until", {
+                    label: "Review Until",
+                    placeholder: "2024-01-01",
+                    isShown: (data) => data['enable_reviews_extraction'],
+                })
                 .numberGreaterThanOrEqualToZero('max_reviews', {
                     label: 'Max Reviews per Place (Leave empty to extract all reviews)',
                     placeholder: 20,
