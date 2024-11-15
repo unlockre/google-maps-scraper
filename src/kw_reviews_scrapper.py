@@ -28,7 +28,7 @@ def get_reviews(place_id, page_token = ""):
     if not page_token:
         page_token = ""
 
-    url = f"https://www.google.com/maps/rpc/listugcposts?authuser=0&hl=en&gl=ar&pb=!1m6!{place_id}!6m4!4m1!1e1!4m1!1e3!2m2!1i20!2s{page_token}!5m2!1sM1EyZ5jkBeSj5NoPh-ufkQM!7e81!8m5!1b1!2b1!3b1!5b1!7b1!11m4!1e3!2e1!6m1!1i2!13m1!1e2"
+    url = f"https://www.google.com/maps/rpc/listugcposts?authuser=0&hl=en&gl=us&pb=!1m6!{place_id}!6m4!4m1!1e1!4m1!1e3!2m2!1i20!2s{page_token}!5m2!1sM1EyZ5jkBeSj5NoPh-ufkQM!7e81!8m5!1b1!2b1!3b1!5b1!7b1!11m4!1e3!2e1!6m1!1i2!13m1!1e2"
 
     payload = {}
     headers = {
