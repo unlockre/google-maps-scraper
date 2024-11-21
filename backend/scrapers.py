@@ -2,6 +2,7 @@ import os
 from urllib.parse import urlparse
 import re
 from botasaurus_server.server import Server
+from src.aptratings import get_apartmentratings_reviews, get_apartmentratings_reviews_request
 from src.gmaps import google_maps_scraper, website_contacts_scraper
 import random
 from botasaurus_server.ui import View, Field, ExpandDictField, ExpandListField, filters, sorts, CustomField
@@ -329,6 +330,7 @@ try:
         ],
         remove_duplicates_by="place_id"
     )
+
 except:
     Server.add_scraper(   
         google_maps_scraper,
@@ -386,7 +388,22 @@ social_media_filters = [
     "emails", "phones", "linkedin", "twitter", "facebook",
     "youtube", "instagram", "github", "snapchat", "tiktok"
 ]
-
+Server.add_scraper(
+        get_apartmentratings_reviews,
+        create_all_task=True,
+        split_task=lambda data: [{"url": data["url"]}],
+        get_task_name=lambda data: data["url"],
+        sorts=[
+            sorts.AlphabeticAscendingSort("website"),
+            sorts.AlphabeticDescendingSort("website"),
+        ],
+    )
+Server.add_scraper(
+    get_apartmentratings_reviews_request,
+    create_all_task=True,
+    split_task=lambda data: [{"url": data["url"]}],
+    get_task_name=lambda data: data["url"],
+)
 Server.add_scraper(
     website_contacts_scraper,
     get_task_name=get_website_contacts_scraper_task_name,
