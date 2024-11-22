@@ -7,3 +7,4 @@ regex
 fastapi
 uvicorn
 bottle
+python-dotenv
