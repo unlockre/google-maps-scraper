@@ -145,7 +145,7 @@ def get_apartmentratings_reviews_request(request: Request, data):
             response = request.post(
                 url='https://proxy-service.whykeyway.com/get_data',
                 headers=headers,
-                data=payload,
+                data=json.dumps(payload),
                 timeout=80,
                 browser='chrome'
             )
