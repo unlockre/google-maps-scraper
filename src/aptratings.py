@@ -103,7 +103,7 @@ def fetch_reviews(url, fetch_html_func):
     print(total_reviews, total_pages)
 
     for page in range(2, total_pages + 1):
-        new_url = f"{url}&page={page}"
+        new_url = f"{url}?page={page}"
         print(new_url)
         html = fetch_html_func(new_url)
         reviews.extend(extract_reviews_from_html(html))
@@ -147,6 +147,7 @@ def get_apartmentratings_reviews_request(request: Request, data):
                 headers=headers,
                 data=json.dumps(payload),
                 timeout=80,
+                json=True,
                 browser='chrome'
             )
         except Exception as e:
