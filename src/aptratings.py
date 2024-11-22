@@ -153,7 +153,7 @@ def get_apartmentratings_reviews_request(request: Request, data):
         except Exception as e:
             print(f"Error fetching HTML: {e}")
             raise
-        print(response.text)
+
         return response.text
 
     return fetch_reviews(url, fetch_html_func)
