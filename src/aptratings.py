@@ -5,9 +5,23 @@ import bs4
 import os
 import json
 
-ZENROWS_USER = os.getenv("ZENROWS_USER")
-ZENROWS_PWD = os.getenv("ZENROWS_PWD")
-PROXY_SERVICE_API_KEY = os.getenv("PROXY_SERVICE_API_KEY")
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
+ZENROWS_USER = os.environ.get("ZENROWS_USER")
+ZENROWS_PWD = os.environ.get("ZENROWS_PWD")
+PROXY_SERVICE_API_KEY = os.environ.get("PROXY_SERVICE_API_KEY")
+
+# Validate environment variables
+missing_vars = [
+    var_name for var_name, value in {
+        "ZENROWS_USER": ZENROWS_USER,
+        "ZENROWS_PWD": ZENROWS_PWD,
+        "PROXY_SERVICE_API_KEY": PROXY_SERVICE_API_KEY,
+    }.items() if value is None
+]
 
 def extract_review_data(review_object):
     data = {}
@@ -103,7 +117,13 @@ def get_apartmentratings_reviews(driver: Driver, data):
 
 @request()
 def get_apartmentratings_reviews_request(request: Request, data):
-    url = data['url']
+    url = data.get('url')
+    if not url:
+        raise ValueError("The 'url' field is required in the input data.")
+
+    if not PROXY_SERVICE_API_KEY:
+        raise EnvironmentError("Missing PROXY_SERVICE_API_KEY environment variable.")
+
     headers = {
         'Authorization': PROXY_SERVICE_API_KEY,
         'Content-Type': 'application/json'
@@ -115,14 +135,24 @@ def get_apartmentratings_reviews_request(request: Request, data):
         "response_type": "html",
         "proxy_settings": {
             "asp": True,
-            "premium_proxy": False
-        },
-        "body": None,
-        "headers": None
+            "premium_proxy": True
+        }
     }
+
     def fetch_html_func(u):
         payload["url"] = u
-        response = request.post('https://proxy-service.whykeyway.com/get_data', headers=headers, json=payload)
+        try:
+            response = request.post(
+                url='https://proxy-service.whykeyway.com/get_data',
+                headers=headers,
+                data=payload,
+                timeout=80,
+                browser='chrome'
+            )
+        except Exception as e:
+            print(f"Error fetching HTML: {e}")
+            raise
+        print(response.text)
         return response.text
 
     return fetch_reviews(url, fetch_html_func)

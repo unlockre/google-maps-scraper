@@ -418,7 +418,7 @@ Server.add_scraper(
 )
 Server.set_rate_limit(browser=5, request=10, task=10)
 Server.set_database_url(os.environ.get('POSTGRES_DB_CONNECTION_STRING'))
-Server.enable_cache()
+# Server.enable_cache()
 Server.configure(
     title="Google Maps Scraper",
     header_title="Made with Botasaurus",
